@@ -48,6 +48,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public RegisterResponseDTO register(RegisterDTO registerDTO) {
         User user = modelMapper.map(registerDTO, User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return RegisterResponseDTO.builder().message("user created successfully")
                                   .build();

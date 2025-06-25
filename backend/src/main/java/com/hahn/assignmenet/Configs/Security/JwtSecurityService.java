@@ -20,7 +20,9 @@ public class JwtSecurityService {
     public SecurityFilterChain customFilterChain(HttpSecurity http) throws Exception{
         return http.csrf(crsf -> crsf.disable())
             .cors(cors -> cors.disable())
-            .authorizeHttpRequests(req -> req.anyRequest().permitAll())
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated())
             .addFilterBefore(filterSecurity, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
